@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "baa": {
+      "command": "node",
+      "args": [
+        "./scripts/plugin-mcp-launcher.mjs",
+        "1.0.0"
+      ],
+      "cwd": ".",
+      "startup_timeout_sec": 30
+    }
+  }
+}

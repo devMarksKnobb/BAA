@@ -1,0 +1,39 @@
+{
+  "name": "build-anything",
+  "version": "1.0.0",
+  "description": "Build Anything (BAA): an agent-native MCP toolkit for planning, generating, inspecting and verifying software projects.",
+  "author": {
+    "name": "BAA contributors"
+  },
+  "homepage": "",
+  "repository": "",
+  "license": "MIT",
+  "keywords": [
+    "build-anything",
+    "software-generation",
+    "mcp-server",
+    "developer-tools"
+  ],
+  "skills": "./skills",
+  "mcpServers": "./.codex-plugin/mcp.json",
+  "interface": {
+    "displayName": "Build Anything",
+    "shortDescription": "Build and verify software with agents",
+    "longDescription": "Build Anything (BAA): an agent-native MCP toolkit for planning, generating, inspecting and verifying software projects.",
+    "developerName": "BAA contributors",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "",
+    "defaultPrompt": [
+      "Use BAA to plan and generate this software project.",
+      "Use BAA to inspect this project and identify implementation gaps.",
+      "Use BAA to verify the generated project and report checks performed."
+    ],
+    "composerIcon": "./assets/baa-plugin.svg",
+    "logo": "./assets/baa-plugin.svg"
+  }
+}

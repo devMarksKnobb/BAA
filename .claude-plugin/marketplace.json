@@ -1,0 +1,20 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "build-anything",
+  "description": "Build Anything (BAA): an agent-native MCP toolkit for planning, generating, inspecting and verifying software projects.",
+  "owner": {
+    "name": "BAA contributors"
+  },
+  "plugins": [
+    {
+      "name": "build-anything",
+      "description": "Build Anything (BAA): an agent-native MCP toolkit for planning, generating, inspecting and verifying software projects.",
+      "source": {
+        "source": "npm",
+        "package": "build-anything-agents",
+        "version": "1.0.0"
+      },
+      "category": "development"
+    }
+  ]
+}
