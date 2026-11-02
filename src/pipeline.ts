@@ -30,16 +30,18 @@ export async function runPipeline(
   const allDiagnostics: Degradation[] = [];
   const store = new MigrationStore();
   const jobId = randomUUID();
-  store.create({ id: jobId, source: "notion-export-zip", destination: path.resolve(config.outputDir) });
+  let jobCreated = false;
+  let tempDir: string | undefined;
   const checkpoint = (stage: string, detail: unknown = {}) => store.checkpoint(jobId, stage, detail);
 
-  // Create temp directory for staged content
-  const tempDir = await mkdtemp(path.join(tmpdir(), "notoob-"));
-
   try {
+    store.create({ id: jobId, source: "notion-export-zip", destination: path.resolve(config.outputDir) });
+    jobCreated = true;
+    // Create temp directory for staged content only after the journal entry exists.
+    tempDir = await mkdtemp(path.join(tmpdir(), "aime-"));
     // Stage 1: Read zip
     if (config.verbose) {
-      console.error("[notoob] Reading zip file...");
+      console.error("[aime] Reading zip file...");
     }
     const { entries, diagnostics: zipDiags, zipSize } = await readZip(
       config.inputZip,
@@ -49,49 +51,49 @@ export async function runPipeline(
 
     if (config.verbose) {
       console.error(
-        `[notoob] Extracted ${entries.length} entries from zip (${zipSize} bytes)`,
+        `[aime] Extracted ${entries.length} entries from zip (${zipSize} bytes)`,
       );
     }
 
     // Stage 2: Normalize
     if (config.verbose) {
-      console.error("[notoob] Normalizing entries...");
+      console.error("[aime] Normalizing entries...");
     }
     const graph = await normalize(entries, config.inputZip, tempDir);
     checkpoint("normalized", { nodes: graph.meta.nodeCount });
 
     if (config.verbose) {
-      console.error(`[notoob] Built graph with ${graph.meta.nodeCount} nodes`);
+      console.error(`[aime] Built graph with ${graph.meta.nodeCount} nodes`);
     }
 
     // Stage 3: Link graph
     if (config.verbose) {
-      console.error("[notoob] Resolving links...");
+      console.error("[aime] Resolving links...");
     }
     await linkGraph(graph);
     checkpoint("links-resolved", { edges: graph.edges.length });
 
     if (config.verbose) {
-      console.error(`[notoob] Resolved ${graph.edges.length} edges`);
+      console.error(`[aime] Resolved ${graph.edges.length} edges`);
     }
 
     // Stage 4: Transform
     if (config.verbose) {
-      console.error("[notoob] Transforming content...");
+      console.error("[aime] Transforming content...");
     }
     await transform(graph);
     checkpoint("transformed", { nodes: graph.nodes.size });
 
     if (config.verbose) {
-      console.error("[notoob] Content transformed.");
+      console.error("[aime] Content transformed.");
     }
 
     // Stage 5: Write
     if (config.verbose) {
       console.error(
         config.dryRun
-          ? "[notoob] Dry run — skipping write."
-          : "[notoob] Writing vault...",
+          ? "[aime] Dry run — skipping write."
+          : "[aime] Writing vault...",
       );
     }
     const writeResult = await writeVault(graph, config);
@@ -99,7 +101,7 @@ export async function runPipeline(
 
     if (config.verbose) {
       console.error(
-        `[notoob] ${writeResult.mode}: ${writeResult.filesWritten} files, ${writeResult.bytesWritten} bytes`,
+        `[aime] ${writeResult.mode}: ${writeResult.filesWritten} files, ${writeResult.bytesWritten} bytes`,
       );
     }
 
@@ -114,7 +116,7 @@ export async function runPipeline(
 
     // Stage 6: Report
     if (config.verbose) {
-      console.error("[notoob] Generating report...");
+      console.error("[aime] Generating report...");
     }
     const report = await generateReport(
       graph,
@@ -127,8 +129,15 @@ export async function runPipeline(
     checkpoint("reported", { degradations: report.degradations.length, unresolvedLinks: report.unresolvedLinks.length });
     store.finish(jobId, "completed");
     return { graph, writeResult, report, diagnostics: allDiagnostics };
+  } catch (error) {
+    if (jobCreated) {
+      try {
+        store.finish(jobId, "failed", error instanceof Error ? error.message : String(error));
+      } catch { /* Preserve the original migration error if journaling also fails. */ }
+    }
+    throw error;
   } finally {
-    // Clean up temp dir
-    await rm(tempDir, { recursive: true, force: true }).catch(() => {});
+    if (tempDir) await rm(tempDir, { recursive: true, force: true }).catch(() => {});
+    store.close();
   }
 }

@@ -116,6 +116,11 @@ AIME is intended for engineers and teams building repeatable migrations between 
 
 AIME is not a promise that every application can be migrated losslessly. Provider APIs differ, and some concepts—permissions, comments, revision history, database semantics, formulas, and embedded objects—may not have equivalent representations in a destination. Those differences need explicit mapping and review.
 
+## Requirements
+
+- Node.js 22.13 or newer, because AIME uses the built-in `node:sqlite` API.
+- npm 10 or newer.
+
 ## Documentation
 
 - [Production Platform Guide](docs/PRODUCTION_PLATFORM.md) — identity, provider connections, workers, configuration, and platform boundaries.
@@ -124,6 +129,7 @@ AIME is not a promise that every application can be migrated losslessly. Provide
 - [Adapter SDK](docs/ADAPTER_SDK.md) — contracts and principles for adding source/destination adapters.
 - [Integration Strategy](docs/INTEGRATION_STRATEGY.md) — connector expansion and interoperability direction.
 - [Roadmap](ROADMAP.md) — planned evolution.
+- [Changelog](CHANGELOG.md) — notable release changes.
 - [Specification](SPEC.md) — project requirements and behavioral expectations.
 
 ## Open source

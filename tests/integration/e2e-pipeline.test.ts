@@ -10,7 +10,7 @@ let tmpDir: string;
 let zipPath: string;
 
 beforeAll(async () => {
-  tmpDir = await mkdtemp(path.join(tmpdir(), "notoob-e2e-"));
+  tmpDir = await mkdtemp(path.join(tmpdir(), "aime-e2e-"));
   zipPath = path.join(tmpDir, "export.zip");
   await writeFile(zipPath, createMinimalExportZip());
 });
@@ -51,7 +51,7 @@ describe("Full Pipeline E2E", () => {
       path.join(outputDir, "report.md"),
       "utf-8",
     );
-    expect(reportMd).toContain("notoob Migration Report");
+    expect(reportMd).toContain("aime Migration Report");
 
     // Check that page files were written
     const files = await getAllFiles(outputDir);

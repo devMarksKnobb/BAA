@@ -1,5 +1,6 @@
 import path from "node:path";
-import { mkdir, writeFile, copyFile, readdir, stat } from "node:fs/promises";
+import { mkdir, writeFile, copyFile, rename, rm, readdir, stat } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import type { MigrationGraph, ContentRef } from "../types/graph.js";
 import type { MigrationConfig } from "../types/config.js";
@@ -25,8 +26,9 @@ async function isDirEmpty(dirPath: string): Promise<boolean> {
   try {
     const entries = await readdir(dirPath);
     return entries.length === 0;
-  } catch {
-    return true; // doesn't exist = empty
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return true;
+    throw error;
   }
 }
 
@@ -138,10 +140,10 @@ export async function writeVault(
     await mkdir(path.dirname(fullPath), { recursive: true });
 
     if (op.content !== undefined) {
-      await writeFile(fullPath, op.content, "utf-8");
+      await atomicWriteFile(fullPath, op.content);
       bytesWritten += Buffer.byteLength(op.content, "utf-8");
     } else if (op.sourcePath) {
-      await copyFile(op.sourcePath, fullPath);
+      await atomicCopyFile(op.sourcePath, fullPath);
       const s = await stat(op.sourcePath);
       bytesWritten += s.size;
     }
@@ -151,6 +153,31 @@ export async function writeVault(
   }
 
   return { mode: "write", filesWritten, bytesWritten, outputPaths };
+}
+
+
+/** Replace a single destination file atomically by staging beside it. */
+async function atomicWriteFile(target: string, content: string): Promise<void> {
+  const temporary = `${target}.${randomUUID()}.tmp`;
+  try {
+    await writeFile(temporary, content, { encoding: "utf-8", flag: "wx" });
+    await rename(temporary, target);
+  } catch (error) {
+    await rm(temporary, { force: true }).catch(() => {});
+    throw error;
+  }
+}
+
+/** Copy binary assets via a same-directory temporary file to avoid partial targets. */
+async function atomicCopyFile(source: string, target: string): Promise<void> {
+  const temporary = `${target}.${randomUUID()}.tmp`;
+  try {
+    await copyFile(source, temporary);
+    await rename(temporary, target);
+  } catch (error) {
+    await rm(temporary, { force: true }).catch(() => {});
+    throw error;
+  }
 }
 
 function buildDryRunResult(

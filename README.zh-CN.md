@@ -1,209 +1,75 @@
-<p align="center">
-  <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white" alt="Notion"/>
-  <img src="https://img.shields.io/badge/%E2%86%92-gray?style=for-the-badge" alt="arrow"/>
-  <img src="https://img.shields.io/badge/Obsidian-7C3AED?style=for-the-badge&logo=obsidian&logoColor=white" alt="Obsidian"/>
-</p>
+<div align="center">
 
-<h1 align="center">notoob</h1>
+# AIME — AI Migration Engineer
 
-<p align="center">
-  <strong>将你的 Notion 工作空间完整迁移到 Obsidian — 链接、数据库、附件，一个不落。</strong>
-</p>
+**让跨平台迁移不再只是盲目复制。**
 
-<p align="center">
-  <a href="./README.md">English</a> | <b>中文</b>
-</p>
+AIME 是一个可扩展的数据迁移引擎，用于发现源数据、规范化内容、解析关系、执行目标平台转换，并记录迁移结果与需要关注的问题。
 
-<p align="center">
-  <a href="#快速开始">快速开始</a> &bull;
-  <a href="#web-界面">Web 界面</a> &bull;
-  <a href="#迁移内容">迁移内容</a> &bull;
-  <a href="#架构设计">架构设计</a>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/github/license/weichaohuang1220/notoob?style=flat-square" alt="License"/>
-  <img src="https://img.shields.io/badge/node-%3E%3D20-brightgreen?style=flat-square&logo=node.js" alt="Node"/>
-  <img src="https://img.shields.io/badge/tests-113%20passed-brightgreen?style=flat-square" alt="Tests"/>
-  <img src="https://img.shields.io/badge/dependencies-6-blue?style=flat-square" alt="Deps"/>
-</p>
+</div>
 
 ---
 
-## 为什么选择 notoob？
+## AIME 能做什么
 
-Notion 自带的导出功能生成的 Markdown 质量很差 — 链接失效、图片丢失、数据库变成难以阅读的 CSV，Callout 和折叠块等特殊格式也全部丢失。
+跨应用迁移不只是复制文件。页面之间存在链接，数据库包含关联，附件独立存储，而不同目标平台支持的内容能力也不相同。迁移即使成功结束，也可能丢失原有语义。
 
-**notoob** 解决了所有这些问题。它会将你的笔记重建为一个干净、完整链接的 Obsidian 仓库：
+AIME 将迁移拆分为可检查的阶段：读取数据、规范化、关系解析、内容转换、目标写入和结果报告。当前核心端到端流程是将 **Notion 导出 ZIP 转换为兼容 Obsidian 的 Markdown 知识库**。
 
-- `[[双向链接]]` 真正可用（不是损坏的相对路径）
-- 图片和文件整理到 `attachments/` 目录，基于内容哈希分桶存储
-- 数据库转换为独立页面，带 YAML frontmatter（Dataview 可查询）
-- Callout、折叠块等特殊格式转换为 Obsidian 原生语法
-- 自动检测嵌套 zip 导出（Notion 的多分卷格式）
-- 自动发现本地 Obsidian 仓库 — 直接导入到已有仓库
-- 详细的迁移报告，告诉你每一步发生了什么
+## 主要能力
 
-## 快速开始
+- **内容转换：** 处理链接、嵌入内容、提示块、折叠块、frontmatter 和附件路径。
+- **关系保留：** 解析页面关系并重写内部链接，减少迁移后的断链。
+- **可移植记录：** 使用规范化 JSONL 记录，为文件型迁移流程提供统一数据表示。
+- **迁移日志：** 通过 SQLite 记录任务状态、阶段检查点和审计事件。
+- **预览与防护：** 支持 dry-run，并在默认情况下拒绝写入非空目标目录。
+- **平台扩展能力：** 提供 Notion、Google Drive、凭据加密、OAuth、身份权限、任务队列和同步基础模块。
+- **多种接口：** 提供 CLI、本地 Web 接口和 MCP 服务端能力。
 
-```bash
-# 1. 克隆并安装
-git clone https://github.com/weichaohuang1220/notoob.git
-cd notoob && npm install
+各连接器和平台模块的成熟度并不完全相同。Notion 导出到 Obsidian 是当前核心端到端路径；其他模块提供 API 操作或可复用的平台基础能力，不代表所有内容类型都能无损迁移或双向同步。
 
-# 2. 从 Notion 导出
-#    设置 → 导出所有工作空间内容 → Markdown & CSV → 下载 zip
+## 工作流程
 
-# 3. 执行迁移
-npx tsx src/index.ts migrate ./notion-export.zip -o ./my-vault
-
-# 4. 在 Obsidian 中打开
-#    打开文件夹作为仓库 → 选择 ./my-vault
+```mermaid
+flowchart TD
+    A[源平台或导出文件] --> B[读取与发现]
+    B --> C[规范化记录]
+    C --> D[解析链接与关系]
+    D --> E[目标平台转换]
+    E --> F[规划、校验与报告]
+    F --> G[写入目标]
+    G --> H[验证并记录结果]
+    I[迁移日志与审计事件] -.进度与检查点.-> B
+    I -.进度与检查点.-> G
+    H --> I
 ```
 
-## Web 界面
+## 设计原则
 
-notoob 内置了可视化 Web 界面 — 拖拽上传 zip，选择目标 Obsidian 仓库，实时查看进度，浏览迁移结果。
+- **保留语义，而不仅是字节：** 关注链接、元数据、附件和内容结构。
+- **明确呈现损失：** 无法转换的特性和未解析的引用应当被记录，而不是被静默忽略。
+- **让过程可检查：** 任务日志、检查点、哈希和报告帮助理解迁移执行情况。
+- **避免意外覆盖：** 使用 dry-run 和目标目录保护机制降低误操作风险。
+- **明确处理冲突：** 不将哈希比较等同于语义判断；不确定的冲突应交由策略或人工处理。
 
-```bash
-npm run web
-# 打开 http://localhost:3000
-```
+AIME 不承诺所有应用之间都能完全无损迁移。权限、评论、历史版本、公式和嵌入对象等内容在不同平台之间可能没有等价表示，需要明确映射与复核。
 
-**功能特性：**
-- 拖拽上传 zip（支持 Notion 嵌套导出，150MB+ 无压力）
-- 自动发现本地 Obsidian 仓库 — 按名称搜索，直接导入
-- 6 阶段实时进度追踪
-- 交互式文件树，点击即可预览
-- 降级项和未解析链接报告
-- 模拟运行模式（不写入文件）
+## 环境要求
 
-## 命令行参考
+- Node.js 22.13 或更高版本（使用内置 `node:sqlite` API）
+- npm 10 或更高版本
 
-```
-notoob migrate <input.zip> --output <dir> [选项]
+## 文档
 
-选项：
-  -o, --output <dir>     输出目录（必需）
-  --force                覆盖已有文件
-  --dry-run              仅运行流程，不写入文件
-  --verbose              调试日志输出到 stderr
-  -h, --help             帮助信息
-```
+- [平台指南](docs/PRODUCTION_PLATFORM.md)
+- [可靠性指南](docs/RELIABILITY.md)
+- [安全与分发](docs/SECURITY_AND_DISTRIBUTION.md)
+- [适配器 SDK](docs/ADAPTER_SDK.md)
+- [集成策略](docs/INTEGRATION_STRATEGY.md)
+- [路线图](ROADMAP.md)
+- [项目规范](SPEC.md)
+- [贡献指南](CONTRIBUTING.md)
 
-**示例：**
+## 开源
 
-```bash
-# 基本迁移
-npx tsx src/index.ts migrate ~/Downloads/export.zip -o ~/Vault
-
-# 预览模式（不写入文件）
-npx tsx src/index.ts migrate export.zip -o ./vault --dry-run
-
-# 覆盖已有仓库
-npx tsx src/index.ts migrate export.zip -o ./vault --force
-```
-
-## 迁移内容
-
-| Notion 元素 | Obsidian 输出 | 状态 |
-|-------------|---------------|------|
-| 页面链接 | `[[页面名称]]`（自动消歧） | 完全支持 |
-| 子页面 | 文件夹层级 + 双向链接 | 完全支持 |
-| 图片 | `![[attachments/a1b2c3d4/image.png]]` | 完全支持 |
-| 文件附件 | `[[attachments/a1b2c3d4/file.pdf]]` | 完全支持 |
-| Callout | `> [!note]` / `> [!warning]` 等 | 完全支持 |
-| 折叠块 | `> [!faq]- 标题`（可折叠） | 完全支持 |
-| 代码块 | ` ```lang ``` ` | 完全支持 |
-| 公式 | `$$LaTeX$$` | 完全支持 |
-| 数据库 | 独立 md + frontmatter + 索引页 | 完全支持 |
-| 书签 | `[标题](url)` | 完全支持 |
-| 嵌入 | Callout + 原始链接 | 降级（已报告） |
-| 同步块 | 展开内容 + 来源标记 | 降级（已报告） |
-| 关联/汇总 | 文本值 + 类型标注 | 降级（已报告） |
-| 颜色/高亮 | 转为纯文本 | 降级（已报告） |
-
-> 所有降级项都会在迁移报告中记录 — 没有任何内容被静默丢弃。
-
-## 输出结构
-
-```
-my-vault/
-  Home.md                              # 页面 → Markdown 文件
-  Projects.md
-  Tasks/                               # 数据库 → 文件夹
-    _index.md                          #   索引页（Dataview 可用）
-    Fix bug.md                         #   每行一个文件
-    Add feature.md
-  attachments/                         # 所有媒体文件，哈希分桶
-    a1b2c3d4/
-      screenshot.png
-  report.json                          # 机器可读报告
-  report.md                            # 人类可读报告
-```
-
-## 数据库输出
-
-每个数据库行会变成一个带类型化 YAML frontmatter 的 Markdown 文件：
-
-```yaml
----
-Due: "2024-03-15"
-Name: Fix bug
-Status: Done
-Tags:
-  - backend
-  - urgent
-_notion_types:
-  Due: date
-  Name: text
-  Status: select
-  Tags: multi_select
----
-```
-
-`_notion_types` 字段保留了 Notion 原始字段类型，使你的数据可以通过 [Dataview](https://github.com/blacksmithgu/obsidian-dataview) 进行查询。
-
-## 架构设计
-
-```
-ZIP ──→ ZipReader ──→ Normalizer ──→ GraphLinker ──→ Transformer ──→ Writer ──→ Reporter
-         │              │               │               │             │           │
-      流式读取       提取 ID          构建链接        重写内容       写入磁盘     生成报告
-      安全校验       分类文件          边表            转换格式                    
-```
-
-**核心设计决策：**
-
-- **图作为唯一数据源** — 所有阶段读写 `MigrationGraph`，只有 Writer 接触磁盘
-- **双轨 ID 匹配** — Notion ID（32位十六进制）为主，复合键（路径+标题）为备
-- **内容哈希分桶附件** — 去重，避免扁平目录瓶颈
-- **确定性输出** — 排序写入、排序 frontmatter 键、LF 换行 → 幂等
-- **降级作为一等概念** — 每个节点携带 `degradations[]` 数组，没有静默丢失
-- **嵌套 zip 自动解包** — 透明处理 Notion 的多分卷 `Part-N.zip` 导出格式
-
-详见 [SPEC.md](./SPEC.md) 完整技术规格。
-
-## 开发
-
-```bash
-npm test            # 运行 113 个测试
-npm run test:watch  # 监听模式
-npm run typecheck   # TypeScript 严格检查
-npm run build       # 使用 tsup 打包
-npm run web         # 启动 Web 界面
-```
-
-**技术栈：** TypeScript / Node >= 20 / ESM / fflate / commander / vitest
-
-## Star 历史
-
-<p align="center">
-  <a href="https://star-history.com/#weichaohuang1220/notoob&Date">
-    <img src="https://api.star-history.com/svg?repos=weichaohuang1220/notoob&type=Date" alt="Star History Chart" width="600"/>
-  </a>
-</p>
-
-## 许可证
-
-[MIT](./LICENSE)
+AIME 使用 [MIT License](LICENSE)。欢迎提交问题、连接器提案、文档改进和代码贡献。参与前请阅读 [贡献指南](CONTRIBUTING.md) 与 [行为准则](CODE_OF_CONDUCT.md)。安全问题请遵循 [SECURITY.md](SECURITY.md) 中的说明。

@@ -37,7 +37,7 @@ export function runPipelineWithEvents(config: MigrationConfig): PipelineEmitter 
   (async () => {
     const startedAt = Date.now();
     const allDiagnostics: Degradation[] = [];
-    const tempDir = await mkdtemp(path.join(tmpdir(), "notoob-"));
+    const tempDir = await mkdtemp(path.join(tmpdir(), "aime-"));
 
     try {
       // Stage 1

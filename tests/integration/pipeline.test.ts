@@ -17,7 +17,7 @@ let unsafeZipPath: string;
 let edgeCaseZipPath: string;
 
 beforeAll(async () => {
-  tmpDir = await mkdtemp(path.join(tmpdir(), "notoob-test-"));
+  tmpDir = await mkdtemp(path.join(tmpdir(), "aime-test-"));
 
   minimalZipPath = path.join(tmpDir, "minimal.zip");
   await writeFile(minimalZipPath, createMinimalExportZip());

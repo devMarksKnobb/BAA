@@ -1,7 +1,7 @@
 {
   "name": "aime-migration-engine",
-  "version": "0.3.0",
-  "description": "AIME \u2014 durable, extensible data migration engine",
+  "version": "0.4.0",
+  "description": "AIME \u2014 extensible, recoverable data migration and synchronization engine",
   "type": "module",
   "bin": {
     "aime": "./dist/index.js"
@@ -24,10 +24,11 @@
     "mcp": "tsx src/mcp/server.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "check": "npm run typecheck && npm test && npm run build"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.13.0"
   },
   "license": "MIT",
   "dependencies": {
