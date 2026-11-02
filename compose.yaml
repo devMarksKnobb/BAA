@@ -1,0 +1,13 @@
+services:
+  aime:
+    build: .
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      PORT: "3000"
+      AIME_STATE_DB: /data/state.sqlite
+    volumes:
+      - aime-state:/data
+    restart: unless-stopped
+volumes:
+  aime-state:
