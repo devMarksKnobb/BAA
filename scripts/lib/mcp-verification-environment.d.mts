@@ -1,3 +1,0 @@
-export const INLINE_EVIDENCE_MCP_ENVIRONMENT: {
-  readonly BAA_MCP_MAX_INPUT_ELEMENTS: "65536";
-};
