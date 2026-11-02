@@ -1,0 +1,21 @@
+{
+  "name": "baa",
+  "interface": {
+    "displayName": "BAA"
+  },
+  "plugins": [
+    {
+      "name": "baa",
+      "source": {
+        "source": "npm",
+        "package": "build-anything-agents",
+        "version": "1.0.0"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

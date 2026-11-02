@@ -1,0 +1,4 @@
+interface:
+  display_name: "BAA analysis optimization"
+  short_description: "Optimize analysis with preserved Evidence and measured costs"
+  default_prompt: "Use $baa-analysis-optimization to find and verify a concrete analysis bottleneck while preserving correctness and Evidence."
