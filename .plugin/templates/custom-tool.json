@@ -1,0 +1,23 @@
+{
+  "id": "my-tool",
+  "name": "My Tool",
+  "version": "0.1.0",
+  "kind": "tool",
+  "description": "Describe a single-purpose tool.",
+  "capabilities": [
+    "project-inspection"
+  ],
+  "connection": {
+    "type": "local",
+    "notes": "Implement a bounded interface and add tests."
+  },
+  "permissions": {
+    "network": false,
+    "workspaceRead": true,
+    "workspaceWrite": false,
+    "shell": false,
+    "credentials": false
+  },
+  "enabled": false,
+  "status": "experimental"
+}

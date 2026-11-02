@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BAA Plugin Manifest",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "version",
+    "kind",
+    "description"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "provider",
+        "integration",
+        "tool",
+        "extension"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string",
+      "format": "uri"
+    },
+    "protocols": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "connection": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "api",
+            "mcp-stdio",
+            "mcp-http",
+            "local",
+            "editor",
+            "cli"
+          ]
+        },
+        "endpointEnv": {
+          "type": "string"
+        },
+        "command": {
+          "type": "string"
+        },
+        "args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "permissions": {
+      "type": "object",
+      "properties": {
+        "network": {
+          "type": "boolean"
+        },
+        "workspaceRead": {
+          "type": "boolean"
+        },
+        "workspaceWrite": {
+          "type": "boolean"
+        },
+        "shell": {
+          "type": "boolean"
+        },
+        "credentials": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "status": {
+      "enum": [
+        "experimental",
+        "planned",
+        "available",
+        "deprecated"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

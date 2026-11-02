@@ -1,0 +1,21 @@
+{
+  "id": "my-plugin",
+  "name": "My Plugin",
+  "version": "0.1.0",
+  "kind": "extension",
+  "description": "Describe what this plugin does.",
+  "capabilities": [],
+  "connection": {
+    "type": "local",
+    "notes": "Implement and test before enabling."
+  },
+  "permissions": {
+    "network": false,
+    "workspaceRead": true,
+    "workspaceWrite": false,
+    "shell": false,
+    "credentials": false
+  },
+  "enabled": false,
+  "status": "experimental"
+}

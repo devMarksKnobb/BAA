@@ -1,0 +1,13 @@
+BAA plugin ecosystem ZIP
+
+From Termux, assuming your BAA checkout is ~/BAA and the ZIP is in Downloads:
+
+  pkg install unzip
+  cd ~/BAA
+  unzip -o ~/storage/downloads/baa-plugin-ecosystem.zip
+  find .plugin -type f | sort
+  git status --short
+
+If needed, allow Termux storage access first with: termux-setup-storage
+
+This adds the .plugin registry/manifests only. It does not install runtime adapters or enable plugins.

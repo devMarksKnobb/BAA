@@ -1,0 +1,28 @@
+{
+  "id": "mcp",
+  "name": "MCP",
+  "version": "0.1.0",
+  "kind": "integration",
+  "description": "Connect BAA with compatible MCP clients and external MCP servers.",
+  "protocols": [
+    "stdio",
+    "streamable-http"
+  ],
+  "capabilities": [
+    "integration-discovery",
+    "configuration"
+  ],
+  "connection": {
+    "type": "mcp-stdio",
+    "notes": "Manifest only; implement and test the adapter before enabling."
+  },
+  "permissions": {
+    "network": false,
+    "workspaceRead": true,
+    "workspaceWrite": false,
+    "shell": false,
+    "credentials": false
+  },
+  "enabled": false,
+  "status": "available"
+}

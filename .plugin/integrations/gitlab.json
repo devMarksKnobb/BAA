@@ -1,0 +1,27 @@
+{
+  "id": "gitlab",
+  "name": "GitLab",
+  "version": "0.1.0",
+  "kind": "integration",
+  "description": "Repository and CI integration through documented APIs.",
+  "protocols": [
+    "REST API"
+  ],
+  "capabilities": [
+    "integration-discovery",
+    "configuration"
+  ],
+  "connection": {
+    "type": "api",
+    "notes": "Manifest only; implement and test the adapter before enabling."
+  },
+  "permissions": {
+    "network": true,
+    "workspaceRead": true,
+    "workspaceWrite": false,
+    "shell": false,
+    "credentials": true
+  },
+  "enabled": false,
+  "status": "planned"
+}

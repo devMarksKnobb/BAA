@@ -1,0 +1,28 @@
+{
+  "id": "docker",
+  "name": "Docker",
+  "version": "0.1.0",
+  "kind": "integration",
+  "description": "Container workflow integration; execution requires explicit approval.",
+  "protocols": [
+    "Docker Engine API",
+    "CLI"
+  ],
+  "capabilities": [
+    "integration-discovery",
+    "configuration"
+  ],
+  "connection": {
+    "type": "cli",
+    "notes": "Manifest only; implement and test the adapter before enabling."
+  },
+  "permissions": {
+    "network": false,
+    "workspaceRead": true,
+    "workspaceWrite": false,
+    "shell": true,
+    "credentials": false
+  },
+  "enabled": false,
+  "status": "planned"
+}

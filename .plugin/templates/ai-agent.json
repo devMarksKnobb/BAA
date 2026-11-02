@@ -1,0 +1,30 @@
+{
+  "id": "my-agent",
+  "name": "My AI Agent",
+  "version": "0.1.0",
+  "kind": "provider",
+  "description": "Connect through a documented API or MCP interface.",
+  "protocols": [
+    "MCP"
+  ],
+  "capabilities": [
+    "agent-workflows"
+  ],
+  "connection": {
+    "type": "mcp-stdio",
+    "command": "node",
+    "args": [
+      "./path/to/server.mjs"
+    ],
+    "notes": "Replace with a trusted local server."
+  },
+  "permissions": {
+    "network": false,
+    "workspaceRead": true,
+    "workspaceWrite": false,
+    "shell": false,
+    "credentials": false
+  },
+  "enabled": false,
+  "status": "experimental"
+}

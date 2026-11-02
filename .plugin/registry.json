@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "name": "baa-plugin-ecosystem",
+  "version": "0.1.0",
+  "description": "Extensible provider and integration registry for Build Anything (BAA).",
+  "manifestSchema": "./schema.json",
+  "providers": [
+    "providers/openai-chatgpt.json",
+    "providers/openai-api.json",
+    "providers/anthropic-claude.json",
+    "providers/openai-codex.json",
+    "providers/github-copilot.json",
+    "providers/cursor.json",
+    "providers/windsurf.json",
+    "providers/google-gemini.json",
+    "providers/ollama.json",
+    "providers/lm-studio.json"
+  ],
+  "integrations": [
+    "integrations/mcp.json",
+    "integrations/github.json",
+    "integrations/gitlab.json",
+    "integrations/vscode.json",
+    "integrations/jetbrains.json",
+    "integrations/docker.json",
+    "integrations/terminal.json"
+  ],
+  "templates": [
+    "templates/basic.json",
+    "templates/ai-agent.json",
+    "templates/custom-tool.json"
+  ],
+  "securityDefaults": {
+    "enabledByDefault": false,
+    "networkAccess": "deny-unless-configured",
+    "filesystemAccess": "workspace-only",
+    "secrets": "environment-or-user-secret-store",
+    "automaticExecution": false,
+    "requireExplicitApprovalFor": [
+      "shell",
+      "filesystem-write",
+      "network",
+      "credential-use"
+    ]
+  }
+}

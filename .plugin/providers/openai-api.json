@@ -1,0 +1,28 @@
+{
+  "id": "openai-api",
+  "name": "OpenAI API",
+  "version": "0.1.0",
+  "kind": "provider",
+  "description": "Use supported OpenAI API endpoints with a user-supplied API key.",
+  "website": "https://platform.openai.com/docs/",
+  "protocols": [
+    "HTTP API"
+  ],
+  "capabilities": [
+    "text-generation",
+    "tool-calling"
+  ],
+  "connection": {
+    "type": "api",
+    "notes": "Registry definition only; implement and test an adapter before marking available."
+  },
+  "permissions": {
+    "network": true,
+    "workspaceRead": true,
+    "workspaceWrite": false,
+    "shell": false,
+    "credentials": true
+  },
+  "enabled": false,
+  "status": "planned"
+}

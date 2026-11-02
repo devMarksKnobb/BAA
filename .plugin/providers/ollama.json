@@ -1,0 +1,25 @@
+{
+  "id": "ollama",
+  "name": "Ollama",
+  "version": "0.1.0",
+  "kind": "provider",
+  "description": "User-configured local Ollama service.",
+  "website": "https://ollama.com/",
+  "protocols": [],
+  "capabilities": [
+    "local-models"
+  ],
+  "connection": {
+    "type": "local",
+    "notes": "Registry definition only; implement and test an adapter before marking available."
+  },
+  "permissions": {
+    "network": false,
+    "workspaceRead": true,
+    "workspaceWrite": false,
+    "shell": false,
+    "credentials": false
+  },
+  "enabled": false,
+  "status": "planned"
+}

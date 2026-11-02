@@ -1,0 +1,26 @@
+{
+  "id": "lm-studio",
+  "name": "LM Studio",
+  "version": "0.1.0",
+  "kind": "provider",
+  "description": "User-configured local model server.",
+  "website": "https://lmstudio.ai/",
+  "protocols": [],
+  "capabilities": [
+    "local-models",
+    "openai-compatible-api"
+  ],
+  "connection": {
+    "type": "local",
+    "notes": "Registry definition only; implement and test an adapter before marking available."
+  },
+  "permissions": {
+    "network": false,
+    "workspaceRead": true,
+    "workspaceWrite": false,
+    "shell": false,
+    "credentials": false
+  },
+  "enabled": false,
+  "status": "planned"
+}

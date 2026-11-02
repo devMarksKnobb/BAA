@@ -1,0 +1,28 @@
+{
+  "id": "anthropic-claude",
+  "name": "Claude",
+  "version": "0.1.0",
+  "kind": "provider",
+  "description": "Anthropic API or supported Claude integration entry.",
+  "website": "https://docs.anthropic.com/",
+  "protocols": [
+    "HTTP API"
+  ],
+  "capabilities": [
+    "text-generation",
+    "tool-use"
+  ],
+  "connection": {
+    "type": "api",
+    "notes": "Registry definition only; implement and test an adapter before marking available."
+  },
+  "permissions": {
+    "network": true,
+    "workspaceRead": true,
+    "workspaceWrite": false,
+    "shell": false,
+    "credentials": true
+  },
+  "enabled": false,
+  "status": "planned"
+}

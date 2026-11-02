@@ -1,0 +1,27 @@
+{
+  "id": "jetbrains",
+  "name": "JetBrains IDEs",
+  "version": "0.1.0",
+  "kind": "integration",
+  "description": "IDE integration using supported JetBrains platform APIs.",
+  "protocols": [
+    "JetBrains Platform"
+  ],
+  "capabilities": [
+    "integration-discovery",
+    "configuration"
+  ],
+  "connection": {
+    "type": "editor",
+    "notes": "Manifest only; implement and test the adapter before enabling."
+  },
+  "permissions": {
+    "network": false,
+    "workspaceRead": true,
+    "workspaceWrite": false,
+    "shell": false,
+    "credentials": false
+  },
+  "enabled": false,
+  "status": "planned"
+}

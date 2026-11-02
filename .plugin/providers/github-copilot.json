@@ -1,0 +1,25 @@
+{
+  "id": "github-copilot",
+  "name": "GitHub Copilot",
+  "version": "0.1.0",
+  "kind": "provider",
+  "description": "Entry for supported Copilot workflows and user-authorized GitHub access.",
+  "website": "https://github.com/features/copilot",
+  "protocols": [],
+  "capabilities": [
+    "coding-assistance"
+  ],
+  "connection": {
+    "type": "local",
+    "notes": "Registry definition only; implement and test an adapter before marking available."
+  },
+  "permissions": {
+    "network": false,
+    "workspaceRead": true,
+    "workspaceWrite": false,
+    "shell": false,
+    "credentials": false
+  },
+  "enabled": false,
+  "status": "planned"
+}

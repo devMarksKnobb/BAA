@@ -1,0 +1,26 @@
+{
+  "id": "openai-codex",
+  "name": "Codex",
+  "version": "0.1.0",
+  "kind": "provider",
+  "description": "Entry for supported Codex coding-agent workflows.",
+  "website": "https://openai.com/codex/",
+  "protocols": [],
+  "capabilities": [
+    "coding-agent",
+    "repository-workflows"
+  ],
+  "connection": {
+    "type": "local",
+    "notes": "Registry definition only; implement and test an adapter before marking available."
+  },
+  "permissions": {
+    "network": false,
+    "workspaceRead": true,
+    "workspaceWrite": false,
+    "shell": false,
+    "credentials": false
+  },
+  "enabled": false,
+  "status": "planned"
+}
